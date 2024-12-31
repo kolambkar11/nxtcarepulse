@@ -20,7 +20,7 @@ export enum FormFieldType {
   SKELETON = "skeleton",
 }
 
-const PatientForm = () => {
+export const PatientForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof UserFormValidation>>({
@@ -37,13 +37,15 @@ const PatientForm = () => {
     email,
     phone,
   }: z.infer<typeof UserFormValidation>) => {
-    console.log("clicked on sumbit");
-
     setIsLoading(true);
     try {
       const userData = { name, email, phone };
+      console.log(userData);
       const user = await createUser(userData);
-      if (user) router.push(`/patients/${user.$id}/register`);
+      console.log("clicked on sumbit", user);
+      if (user) {
+        router.push(`/patients/${user.$id}/register`);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -60,7 +62,7 @@ const PatientForm = () => {
         <CustomFormField
           fieldType={FormFieldType.INPUT}
           control={form.control}
-          name="Name"
+          name="name"
           label="Full Name"
           placeholder="John Doe"
           iconSrc="/assets/icons/user.svg"
@@ -87,5 +89,3 @@ const PatientForm = () => {
     </Form>
   );
 };
-
-export default PatientForm;
