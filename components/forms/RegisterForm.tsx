@@ -111,13 +111,13 @@ export const RegisterForm = ({ user }: { user: User }) => {
                   defaultValue={field.value}
                 >
                   {GenderOptions.map((option) => {
+                    console.log(option);
                     return (
                       <div className="radio-group" key={option}>
-                        <RadioGroupItem value={option} id={option}>
-                          <label htmlFor={option} className="cursor-pointer">
-                            {option}
-                          </label>
-                        </RadioGroupItem>
+                        <RadioGroupItem value={option} id={option} />
+                        <label htmlFor={option} className="cursor-pointer">
+                          {option}
+                        </label>
                       </div>
                     );
                   })}
@@ -127,6 +127,52 @@ export const RegisterForm = ({ user }: { user: User }) => {
             placeholder="91 86928 05802"
           />
         </div>
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <CustomFormField
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="address"
+            label="Address"
+            placeholder="3/25 Keni Bldg Mumbai"
+          />
+          <CustomFormField
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="occupation"
+            label="Occupation"
+            placeholder="Software Engineer"
+          />
+        </div>
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <CustomFormField
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="emergencyContactName"
+            label="Emergency Contact Name"
+            placeholder="Gardians Name"
+          />
+          <CustomFormField
+            fieldType={FormFieldType.PHONE_INPUT}
+            control={form.control}
+            name="emergencyContactNumber"
+            label="Emergency Contact Number"
+            placeholder="91 86928 05802"
+          />
+        </div>
+
+        <section className="space-y-6">
+          <div className="mb-9 space-y-1">
+            <h2 className="sub-header">Medical Information </h2>
+          </div>
+        </section>
+        <CustomFormField
+          fieldType={FormFieldType.PHONE_INPUT}
+          control={form.control}
+          name="emergencyContactNumber"
+          label="Emergency Contact Number"
+          placeholder="91 86928 05802"
+        />
+
         <SumbitButton isLoading={isLoading}>Get Started</SumbitButton>
       </form>
     </Form>
