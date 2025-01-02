@@ -43,9 +43,7 @@ export const RegisterForm = ({ user }: { user: User }) => {
     setIsLoading(true);
     try {
       const userData = { name, email, phone };
-      console.log(userData);
       const user = await createUser(userData);
-      console.log("clicked on sumbit", user);
       if (user) {
         router.push(`/patients/${user.$id}/register`);
       }
@@ -120,7 +118,6 @@ export const RegisterForm = ({ user }: { user: User }) => {
                   defaultValue={field.value}
                 >
                   {GenderOptions.map((option) => {
-                    console.log(option);
                     return (
                       <div className="radio-group" key={option}>
                         <RadioGroupItem value={option} id={option} />
