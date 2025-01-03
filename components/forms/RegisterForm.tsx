@@ -7,9 +7,9 @@ import { Form, FormControl } from "@/components/ui/form";
 import CustomFormField from "../CustomFormField";
 import SumbitButton from "../SumbitButton";
 import { useState } from "react";
-import { UserFormValidation } from "@/lib/validation";
+import { PatientFormValidation, UserFormValidation } from "@/lib/validation";
 import { useRouter } from "next/navigation";
-import { createUser } from "@/lib/actions/patient.actions";
+import { registerPatient } from "@/lib/actions/patient.actions";
 import { FormFieldType } from "./PatientForm";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import {
@@ -17,36 +17,68 @@ import {
   GenderOptions,
   IdentificationTypes,
   PatientFormDefaultValues,
-} from "@/contants";
+} from "@/constants";
 import { SelectItem } from "../ui/select";
 import Image from "next/image";
 import FileUploader from "../ui/FileUploader";
 
-export const RegisterForm = ({ user }: { user: User }) => {
+const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const form = useForm<z.infer<typeof UserFormValidation>>({
-    resolver: zodResolver(UserFormValidation),
+  const form = useForm<z.infer<typeof PatientFormValidation>>({
+    resolver: zodResolver(PatientFormValidation),
     defaultValues: {
       ...PatientFormDefaultValues,
-      name: "",
-      email: "",
-      phone: "",
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
     },
   });
 
-  const onSubmit = async ({
-    name,
-    email,
-    phone,
-  }: z.infer<typeof UserFormValidation>) => {
+  const onSubmit = async (values: z.infer<typeof PatientFormValidation>) => {
     setIsLoading(true);
+
+    let formData;
+    console.log("line 52 values", values.identificationDocument);
+
+    if (
+      values.identificationDocument &&
+      values.identificationDocument?.length > 0
+    ) {
+      const blobFile = new Blob([values.identificationDocument[0]], {
+        type: values.identificationDocument[0].type,
+      });
+      console.log(
+        "ues.identificationDocument[0].name",
+        values.identificationDocument[0].name
+      );
+      formData = new FormData();
+
+      formData.append("blobFile", blobFile);
+      formData.append("fileName", values.identificationDocument[0].name);
+      console.log("fileName", values.identificationDocument[0].name);
+    }
+
     try {
-      const userData = { name, email, phone };
-      const user = await createUser(userData);
-      if (user) {
-        router.push(`/patients/${user.$id}/register`);
+      console.log("in try block", formData);
+      const patientData = {
+        ...values,
+        userId: user.$id,
+        birthDate: new Date(values.birthDate),
+        identification: formData,
+      };
+
+      // @ts-ignore
+      const patient = await registerPatient(patientData);
+
+      if (patient) {
+        router.push(`/patients/${user.$id}/new-appointment`);
       }
+      // const userData = { name, email, phone };
+      // const user = await createUser(userData);
+      // if (user) {
+      //   router.push(`/patients/${user.$id}/register`);
+      // }
     } catch (error) {
       console.log(error);
     }
@@ -101,9 +133,6 @@ export const RegisterForm = ({ user }: { user: User }) => {
             control={form.control}
             name="birthDate"
             label="Date of birth"
-            placeholder="johndoe@careplus.pro"
-            iconSrc="/assets/icons/email.svg"
-            iconAlt="email"
           />
           <CustomFormField
             fieldType={FormFieldType.SKELETON}
@@ -312,3 +341,4 @@ export const RegisterForm = ({ user }: { user: User }) => {
     </Form>
   );
 };
+export default RegisterForm;

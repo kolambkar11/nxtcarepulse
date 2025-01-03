@@ -12,6 +12,7 @@ import { FormFieldType } from "./forms/PatientForm";
 import Image from "next/image";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
+import ReactDatePicker from "react-datepicker";
 import { E164Number } from "libphonenumber-js/core";
 import DatePicker from "react-datepicker";
 
@@ -95,8 +96,8 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
             <DatePicker
               selected={field.value}
               onChange={(date) => field.onChange(date)}
-              dateFormat={dateFormat ?? "MM/dd/yyyy"}
-              showTimeSelect={showTimeSelect ?? false}
+              dateFormat={props.dateFormat ?? "MM/dd/yyyy"}
+              showTimeSelect={props.showTimeSelect ?? false}
               timeInputLabel="Time:"
               wrapperClassName="date-picker"
             />
