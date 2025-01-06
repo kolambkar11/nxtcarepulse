@@ -68,7 +68,11 @@ export const AppointmentForm = ({
           status: status as Status,
           note: values.note!,
         };
-        const appointment = await createAppointment(appointmentData);
+        const ap = await createAppointment(appointmentData);
+
+        const appointment = JSON.parse(ap);
+        console.log("appointment", appointment.$id);
+        // return false;
 
         if (appointment) {
           form.reset();

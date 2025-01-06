@@ -27,6 +27,7 @@ export const createAppointment = async (
 };
 // GET APPOINTMENT
 export const getAppointment = async (appointmentId: string) => {
+  console.log("appointmentId", appointmentId);
   try {
     const appointment = await databases.getDocument(
       DATABASE_ID!,

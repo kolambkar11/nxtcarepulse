@@ -11,6 +11,7 @@ const Success = async ({
   params: { userId },
 }: SearchParamProps) => {
   const appointmentId = (searchParams?.appointmentId as string) || "";
+  console.log("userId", searchParams);
   const ap = await getAppointment(appointmentId);
   const appointment = JSON.parse(ap);
 
