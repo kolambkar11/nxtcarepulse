@@ -29,6 +29,7 @@ export const AppointmentForm = ({
   const AppointmentFormValidation = getAppointmentSchema(type);
 
   const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<z.infer<typeof AppointmentFormValidation>>({
     resolver: zodResolver(AppointmentFormValidation),
     defaultValues: {
@@ -55,19 +56,26 @@ export const AppointmentForm = ({
         status = "pending";
         break;
     }
-
+    console.log("here in type", patientId);
     try {
       if (type === "create" && patientId) {
         const appointmentData = {
           userId,
           patient: patientId,
           primaryPhysician: values.primaryPhysician,
-          reason: values.reason,
           schedule: new Date(values.schedule),
+          reason: values.reason!,
           status: status as Status,
-          note: values.note,
+          note: values.note!,
         };
         const appointment = await createAppointment(appointmentData);
+
+        if (appointment) {
+          form.reset();
+          router.push(
+            `/patients/${userId}/new-appointment/success?appointmentId=${appointment.$id}`
+          );
+        }
       }
     } catch (error) {
       console.log(error);

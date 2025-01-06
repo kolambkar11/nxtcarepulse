@@ -1,32 +1,33 @@
-import { AppointmentForm } from "@/components/forms/AppointmentForm";
-import { PatientForm } from "@/components/forms/PatientForm";
-import { getPatient } from "@/lib/actions/patient.actions";
 import Image from "next/image";
-import Link from "next/link";
-import React from "react";
+
+import { AppointmentForm } from "@/components/forms/AppointmentForm";
+import { getPatient } from "@/lib/actions/patient.actions";
 
 const Appointment = async ({ params: { userId } }: SearchParamProps) => {
-  const patient = await getPatient(userId);
+  const pt = await getPatient(userId);
+  const patient = JSON.parse(pt);
+  console.log("patient", typeof patient);
 
   return (
     <div className="flex h-screen max-h-screen">
-      <div className="remove-scrollbar container my-auto">
+      <section className="remove-scrollbar container my-auto">
         <div className="sub-container max-w-[860px] flex-1 justify-between">
           <Image
             src="/assets/icons/logo-full.svg"
             height={1000}
             width={1000}
-            alt="patient"
+            alt="logo"
             className="mb-12 h-10 w-fit"
           />
+
           <AppointmentForm
-            type="create"
-            userId={userId}
             patientId={patient?.$id}
+            userId={userId}
+            type="create"
           />
           <p className="copyright mt-10 py-12">© 2024 CarePulse</p>
         </div>
-      </div>
+      </section>
       <Image
         src="/assets/images/appointment-img.png"
         width={1000}
