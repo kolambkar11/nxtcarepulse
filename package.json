@@ -20,6 +20,7 @@
     "@radix-ui/react-slot": "^1.1.1",
     "@tanstack/react-table": "^8.20.6",
     "class-variance-authority": "^0.7.1",
+    "@sentry/nextjs": "^8.9.2",
     "clsx": "^2.1.1",
     "i": "^0.3.7",
     "input-otp": "^1.4.1",

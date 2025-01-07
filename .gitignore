@@ -3,6 +3,7 @@
 # dependencies
 /node_modules
 .env.local
+.env.sentry-build-plugin
 /.pnp
 .pnp.*
 .yarn/*
@@ -40,3 +41,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Sentry Config File
+.env.sentry-build-plugin
